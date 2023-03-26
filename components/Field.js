@@ -1,7 +1,6 @@
 export class Field {
 
     // ФонВерх
-    // [280, 0, 208, 150]
     #bgSource1 = {
         x: 280,
         y: 0,
@@ -10,23 +9,23 @@ export class Field {
     };
 
     // ФонНиз
-    // [0, 0, 208, 150]
     #bgSource2 = {
         x: 0,
         y: 0,
         width: 208,
         height: 200,
     };
+
     // Счетчик частей поля
     #count = 1;
 
     constructor() {
     }
 
-    move(index) {
-        // сдвиг слева
-        const backgroudX = -((index * SPEED) % canvas.width) - 420;
-        this.#count = Math.floor(index % 208)
+    move(index, shift, ctx,img) {
+        
+        const backgroudX = -shift - 416;
+        this.#count = Math.floor(index % 208)+1
 
         // протаскиваем все части в цикле
         for (let m = 0; m < this.#count; m++) {

@@ -1,3 +1,6 @@
+import * as myMath from "/components/MyMath.js";
+import * as Const from "/components/Const.js";
+
 // Класс труба
 class Tube {
     _tubeSource = {
@@ -13,81 +16,84 @@ class Tube {
       width: 30,
       height: 0,
     };
+    // Длина трубы
+    _h = 0;
+    // координата Х  на поле - при движении меняется
+    _X = 0;
     
-    // // длина трубы
-    // _high = 0;
-    // // расположение на оси X
-    // _location = canvas.width;
-    
-    constructor() { 
-      // длина трубы
-      let h = myMath.getRandom(100, 350);
-      this._tubeResult.height = h;   
-      this._tubeSource.height = h;       
+    // полностью создаем трубу
+    constructor(h) { 
+    //   // длина трубы
+    //   this._h = h;
+    //   this._tubeResult.height = h;   
+    //   this._tubeSource.height = h;       
     }
-    
-    move(index) {
+
+    //   Установка текущей координаты      
+    setX(Х) {
+      this._X = Х;       
+    }
+      //   получение текущей координаты      
+      getX(Х) {
+        return this._X;       
+      }
+
+    // рисуем трубу
+    move(ctx,img) {        
+        this._tubeResult.x = this._X,
       // сдвиг слева
-      const backgroudX = -((index * SPEED) % canvas.width) - 420;
-      // this.#count = Math.floor(index % 208)
-      // меняем только x координату
-        this._tubeResult.x = backgroudX + canvas.width;
           ctx.drawImage(
               img,
               this._tubeSource.x,
               this._tubeSource.y,
               this._tubeSource.width,
               this._tubeSource.height,
-  
+
               this._tubeResult.x,
               this._tubeResult.y,
               this._tubeResult.width,
               this._tubeResult.height,
-  
           );
     }
   }
-  
- export class TubeBehind extends Tube {
-  
-    constructor() {
+ 
+  // специфика трубы сверху 
+ export class TubeBehind extends Tube {  
+    
+    constructor(h) {
       super();
-      this._tubeSource.x = 580;
-      this._tubeSource.y = 0;
-      this._tubeSource.width = 30;
-      this._tubeSource.height = 380;      
-    }
-    set() {
-      let h = myMath.getRandom(100, 350);
-      
-      this._tubeSource.y = 380-h;       
-      this._tubeSource.height = h;       
-  
+      super._h = h;
+      this._tubeSource.x = 555;
+      this._tubeSource.y = 400-this._h;
+      this._tubeSource.width = 55;
+      this._tubeSource.height = this._h;  
+
       this._tubeResult.x = canvas.width,  
       this._tubeResult.y = 0;  
-      this._tubeResult.height = h;           
+      this._tubeResult.width = 55;
+      this._tubeResult.height = this._h;                 
     }
-  
   }
-  
+
+  // специфика трубы снизу
  export class TubeBelow extends Tube {
   
-    constructor() {
+    constructor(h) {
       super();
-      this._tubeSource.x = 490;
+      super._h = h;
+
+      this._tubeSource.x = 500;
       this._tubeSource.y = 0;
-      this._tubeSource.width = 30;
-      this._tubeSource.height = 380;      
-    }
-    set() {
-      let h = myMath.getRandom(100, 350);
-      
-      this._tubeSource.y = 0;       
-      this._tubeSource.height = h;       
+      this._tubeSource.width = 55;
+      this._tubeSource.height = this._h;       
   
       this._tubeResult.x = canvas.width,  
       this._tubeResult.y = 700-h;  
-      this._tubeResult.height = h;           
+
+      this._tubeResult.width = 55;
+      this._tubeResult.height = this._h;           
+      
+
     }
   }
   
