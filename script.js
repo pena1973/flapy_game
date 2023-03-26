@@ -1,24 +1,27 @@
-import {Field} from "./components/Field.js";
+import { Field } from "/components/Field.js";
+import * as Const from "/components/Const.js";
+import * as myMath from "/components/MyMath.js";
+import { TubeBehind, TubeBelow } from "/components/Tube.js";
 
-import myMath from "./components/MyMath";
-import {TubeBehind,TubeBelow} from "./components/Tube";
+
+export const canvas = document.getElementById("canvas");
+export const ctx = canvas.getContext("2d");
+
 const imgURL = "sprite.png";
-
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
-
 const img = new Image();
 img.src = imgURL;
 
-// const SPEED = 3.1;
+// // const SPEED = 3.1;
 const SPEED = 1.1;
-const SIZE = [51, 36];// размер квадратика птицы
-// случайный интервал между трубами
-let between = myMath.getRandom(50, 250);
+// const SIZE = [51, 36];// размер квадратика птицы
+
+// интервал между трубами инишиал
+let between = 0;
+// массив труб на поле
+let tubes = [];
 
 // Размеры
 //  X,Y,width,height
-
 // Птица
 // ТрубаСверху
 // ТрубаСнизу
@@ -32,8 +35,6 @@ let between = myMath.getRandom(50, 250);
 
 
 const field = new Field();
-const tubeBehind = new TubeBehind();
-const tubeBelow = new TubeBelow();
 
 let index = 0;
 //render - одна итерация  за цикл которой счетчик увеличивается на 0.3
@@ -43,86 +44,41 @@ let index = 0;
 // и таким образом в цикле 3 состояния
 const render = () => {
   index += 0.3;
-  field.move(index);
-  //  const backgroudX = -((index * SPEED) % canvas.width);
+  ctx.clearRect(0, 0, canvas.width, canvas.height)
 
-  // //  результирующая точка итерации
-  //   const bgPartOneResult = {
-  //     x: backgroudX + canvas.width,
-  //     y: 0,
-  //     width: 210,
-  //     height: 150,   
-  //   };
+  // Сдвиг от края
+  const shift = (index * SPEED) % canvas.width;
+  // Обновили поле
+   field.move(index, shift, ctx, img);
 
-  // //  результирующая точка второй части
-  //     const bgPartTwoResult = {
-  //     x: backgroudX + canvas.width+210,
-  //     y: 0,
-  //     width: 210,
-  //     height: 150
-  //   };
+  // если горизонтальный интервал межу трубами наступил ставим новую пару труб
+  between -= 0.3;
+  if (between < 0) {
+    // поставили две трубы  c такой длинной чтоб был интервал между ними 200
+    // длина трубы
+    let h = myMath.getRandom(100, 350);
+    const tubeBehind = new TubeBehind(h);
+    tubeBehind.setX(canvas.width);
+    const tubeBelow = new TubeBelow(canvas.height - 200 - h);
+    tubeBelow.setX(canvas.width);
+    tubes.push(...[tubeBehind, tubeBelow]);
+ 
+    // получили новый интервал между трубами
+     between = myMath.getRandom(50, 200);
+  }
 
-  //   // протаскивание части исходного изображения из одной точки в другую
-  //   // проташили сначала первую
-  //   ctx.drawImage(
-  //     img,
+   // проверим трубы и удалим отработанные (за экраном)
+    tubes = tubes.filter(tube => tube.getX() > -55);
+    // рисуем и сдвигаем все трубы в каждой итерации
+    tubes.forEach(tube => {
+    // перерисуем
+    tube.move(ctx, img);
+    // сдвигаем координату трубы трубы по индексу  
+    tube.setX(tube.getX() - 0.8);
+    });
 
-  //     bgSource.x,
-  //     bgSource.y,
-  //     bgSource.width,
-  //     bgSource.height,
-
-  //     bgPartOneResult.x,
-  //     bgPartOneResult.y,
-  //     bgPartOneResult.width,
-  //     bgPartOneResult.height
-  //   );
-
-  //   // по окончании первой проташили вторую
-  //   ctx.drawImage(
-  //     img,
-
-  //     bgSource.x,
-  //     bgSource.y,
-  //     bgSource.width,
-  //     bgSource.height,
-
-  //     bgPartTwoResult.x,
-  //     bgPartTwoResult.y,
-  //     bgPartTwoResult.width,
-  //     bgPartTwoResult.height
-  //   );
-
-  // // птица
-  // const birdSource =  {
-  //   x: 432,
-  //   y: Math.floor((index % 9) / 3) * SIZE[1],
-  //   width: SIZE[0],
-  //   height: SIZE[1],
-  // };
-
-  // const birdResult = {
-  //   x: canvas.width / 2 - SIZE[0] / 2,
-  //   y: 200,
-  //   width: SIZE[0],
-  //   height: SIZE[1],
-  // };
-
-  // ctx.drawImage(
-  //   img,
-
-  //   birdSource.x,
-  //   birdSource.y,
-  //   birdSource.width,
-  //   birdSource.height,
-
-  //   birdResult.x,
-  //   birdResult.y,
-  //   birdResult.width,
-  //   birdResult.height
-  // );
 
   window.requestAnimationFrame(render);
 };
 
-img.onload = render;
+Const.img.onload = render;
