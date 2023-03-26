@@ -1,4 +1,4 @@
-import {Field} from "./components/Field";
+import {Field} from "./components/Field.js";
 
 import myMath from "./components/MyMath";
 import {TubeBehind,TubeBelow} from "./components/Tube";
