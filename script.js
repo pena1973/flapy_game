@@ -6,6 +6,7 @@ import { Bird } from "/components/Bird.js";
 import { RestartButton } from "/components/RestartButton.js";
 import { Tablo } from "/components/Tablo.js";
 import { Cursor } from "/components/Cursor.js";
+import { CrushBird } from "/components/CrushBird.js";
 
 export const canvas = document.getElementById("canvas");
 export const ctx = canvas.getContext("2d");
@@ -76,8 +77,8 @@ function flyBetween(bird, tubes, iterator) {
     let tubeX = tube.getX();
     // проверяю только по оси X и только одну координару переднего края в промежутке двойной сдвиг (труба+ птица навстречу)
     // (краш перед этим уже проверили)
-    //  при пересечении первой же трубы по переднему краю возаращаемся c истиной
-    if (myMath.Range(birdX + birdW, tubeX, tubeX + iterator*2)){ 
+    //  при пересечении первой же трубы посередине по переднему краю возаращаемся c истиной
+    if (myMath.Range(birdX + birdW, tubeX+36, tubeX + iterator*2+36)){ 
       return true
     }
   };
@@ -103,17 +104,17 @@ const render = () => {
   // если горизонтальный интервал межу трубами наступил ставим новую пару труб
   between -= 0.3;
   if (between < 0) {
-    // поставили две трубы  c такой длинной чтоб был интервал между ними 300
+    // поставили две трубы  c такой длинной чтоб был интервал между ними рамер птицы в высоту(26)*5 + 100  (100-  нижнее пространство где табло)
     // длина трубы
-    let h = myMath.getRandom(100, 250);
+    let h = myMath.getRandom(100, 350);
     const tubeBehind = new TubeBehind(h);
     tubeBehind.setX(canvas.width);
-    const tubeBelow = new TubeBelow(canvas.height - 300 - h);
+    const tubeBelow = new TubeBelow(canvas.height - 230 - h);
     tubeBelow.setX(canvas.width);
     tubes.push(...[tubeBehind, tubeBelow]);
 
     // получили новый интервал между трубами по горизонтали
-    between = myMath.getRandom(70, 100);
+    between = myMath.getRandom(100,150);
   }
 
   // проверим трубы и удалим отработанные (за экраном)
@@ -130,13 +131,17 @@ const render = () => {
   bird.setStage(index);
   bird.move(ctx, img);
 
-  //Если есть столкновение птицы с трубой
+  //Если есть столкновение птицы с препятствием
   if (crush(bird, tubes)) {
     gameStage = 2;
     if (score > best)
       best = score;
     localStorage.setItem('best', best);
     tablo.setBest(best);
+    
+    const crushBird = new CrushBird(bird,tubes);
+    crushBird.crush(index, shift, ctx, img, canvas,field, restartButton,tablo,tubes,bird);
+
     return;
     // если пролет между трубами
   } else if (flyBetween(bird, tubes, 0.3)) {

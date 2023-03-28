@@ -1,10 +1,10 @@
 
 // Класс Птица
 export class Bird {
+    #acceleration = 1;
     #canvas_width = 0;
     #SIZE = [36, 26];// размер квадратика птицы
     #Y = 100; // высота над землей
-
     #birdSource = {
         x: 270,
         y: 200,
@@ -37,22 +37,25 @@ export class Bird {
 
     // клик - птица вверх
     up() {
-        this.#Y -= 30;
+        this.#acceleration=1.01;      
+        this.#Y -= this.#Y<65? this.#Y : 65;
     }
+    
+
     getCoord() {
-         return [this.#birdResult.x, this.#birdResult.y]
-            }
+        return [this.#birdResult.x, this.#birdResult.y]
+    }
 
     getSize() {
         return [this.#SIZE[0], this.#SIZE[1]]
     }
-               
+
 
     move(ctx, img) {
-        this.#Y += 1;
+        this.#acceleration*=1.01;
+        this.#Y += 0.8 *this.#acceleration;        
         ctx.drawImage(
             img,
-
             this.#birdSource.x,
             this.#birdSource.y,
             this.#birdSource.width,
@@ -64,5 +67,26 @@ export class Bird {
             this.#birdResult.height
         );
     }
+
+    fall(ctx, img) {        
+        this.#acceleration*=1.05;
+        this.#Y += 0.8 *this.#acceleration;            
+        this.#birdResult.y = this.#Y; 
+        // ctx.rotate(90);       
+       // ctx.rotate(90*Math.PI/180);       
+        ctx.drawImage(
+            img,
+            this.#birdSource.x,
+            this.#birdSource.y,
+            this.#birdSource.width,
+            this.#birdSource.height,
+
+            this.#birdResult.x,
+            this.#birdResult.y,
+            this.#birdResult.width,
+            this.#birdResult.height
+        );
+    }
+    
 
 }

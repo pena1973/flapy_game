@@ -71,7 +71,7 @@ export class TubeBehind extends Tube {
 
         this._tubeResult.x = canvas.width,
             this._tubeResult.y = 0;
-        this._tubeResult.width = 30;
+        this._tubeResult.width = 72;
         this._tubeResult.height = this._h;
     }
     
@@ -91,7 +91,7 @@ export class TubeBelow extends Tube {
 
         this._tubeResult.x = canvas.width,
         this._tubeResult.y = 600 - h;
-        this._tubeResult.width = 30;
+        this._tubeResult.width = 72;
         this._tubeResult.height = this._h;
 
 
