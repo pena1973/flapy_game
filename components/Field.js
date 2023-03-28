@@ -31,14 +31,14 @@ export class Field {
         for (let m = 0; m < this.#count; m++) {
             let bgPartResult2 = {
                 x: backgroudX + canvas.width + (208 * m),
-                y: 500,
+                y: 400,
                 width: 208,
                 height: 200,
             };
 
             let bgPartResult1 = {
                 x: backgroudX + canvas.width + (208 * m),
-                y: 0,
+                y: 600,
                 width: 208,
                 height: 100,
             };
