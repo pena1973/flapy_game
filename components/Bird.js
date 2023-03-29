@@ -53,7 +53,8 @@ export class Bird {
 
     move(ctx, img) {
         this.#acceleration*=1.01;
-        this.#Y += 0.8 *this.#acceleration;        
+        this.#Y += 0.8 *this.#acceleration;    
+
         ctx.drawImage(
             img,
             this.#birdSource.x,
@@ -71,9 +72,11 @@ export class Bird {
     fall(ctx, img) {        
         this.#acceleration*=1.05;
         this.#Y += 0.8 *this.#acceleration;            
-        this.#birdResult.y = this.#Y; 
-        // ctx.rotate(90);       
-       // ctx.rotate(90*Math.PI/180);       
+        this.#birdResult.y = this.#Y;       
+     // здесь я пыталась повернуть птицу, 
+     //не получилось и ментор мне помочь не смог
+      // ctx.save();
+      // ctx.rotate(1*Math.PI/180);                 
         ctx.drawImage(
             img,
             this.#birdSource.x,
@@ -86,6 +89,8 @@ export class Bird {
             this.#birdResult.width,
             this.#birdResult.height
         );
+        
+            // ctx.restore();
     }
     
 

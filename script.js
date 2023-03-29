@@ -1,5 +1,4 @@
 import { Field } from "/components/Field.js";
-import * as Const from "/components/Const.js";
 import * as myMath from "/components/MyMath.js";
 import { TubeBehind, TubeBelow } from "/components/Tube.js";
 import { Bird } from "/components/Bird.js";
@@ -7,15 +6,19 @@ import { RestartButton } from "/components/RestartButton.js";
 import { Tablo } from "/components/Tablo.js";
 import { Cursor } from "/components/Cursor.js";
 import { CrushBird } from "/components/CrushBird.js";
+import { SPEED } from "/components/Const.js";
 
 export const canvas = document.getElementById("canvas");
 export const ctx = canvas.getContext("2d");
 
 const img = new Image();
 img.src = 'sprite.png';
+//Положить источник img куда-либо еще кроме корня у меня не получается, 
+//он не видит файла
+// img.src = './imgages/sprite.png';
 
-const SPEED = 1.1;
-
+// Это не константы а переменные игры  
+// поэтому их не выношу в файл констант
 // стартовый интервал между трубами 
 let between = 0;
 // массив труб на поле
@@ -185,7 +188,7 @@ const init = () => {
   tablo.move(ctx, img);
 };
 
-Const.img.onload = init;
+img.onload = init;
 
 // слушаю события на поле  смотря куда кликнут
 canvas.addEventListener("click", function (ev) {

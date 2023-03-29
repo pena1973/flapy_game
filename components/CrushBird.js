@@ -8,7 +8,7 @@ export class CrushBird {
 
   
     crush(index, shift, ctx, img, canvas,field, restartButton,tablo,tubes,bird) {
-
+      
        let intervalID = setInterval(() => {
 
             if (bird. getCoord()[1] < 568) {                
@@ -24,10 +24,8 @@ export class CrushBird {
                   tubes.forEach(tube => {
                   tube.move(ctx, img);
                   });
-                 // прорисовали птицу
-                //   bird.setStage(index);
-                  bird.fall(ctx, img ); 
-
+                 // прорисовали птицу                
+                  bird.fall(ctx, img );                                  
             } else    clearTimeout(intervalID);
         }, 100);
 
